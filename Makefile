@@ -1,5 +1,5 @@
 EXE = flcProject
-SRC = main.c flc_lex.c flc_yacc.c
+SRC = main.c utilities.c flc_lex.c flc_yacc.c
 
 LEX = flex
 YACC = bison --debug -o y.tab.c
