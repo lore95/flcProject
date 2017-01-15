@@ -1,50 +1,31 @@
 %{
-
-#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-
-#ifndef TRUE
-#define TRUE		1
+#include <ctype.h>
+#include <stdio.h>
+#ifndef YYSTYPE
+#define YYSTYPE int
 #endif
-
-#ifndef FALSE
-#define FALSE		0
-#endif
-
-int 	yyerror (char * msg);
-
-extern	char	*yytext;
-extern char StringBuffer[];
-
+#define INTEGER 258
+extern YYSTYPE yylval;
 %}
 
-%token TOK_FLOAT
-%token TOK_INTEGER
-%token TOK_STRING
-%token TOK_PLUS
-%token TOK_MINUS
-%token TOK_ASTERISK
-%token TOK_SLASH
-%token TOK_EQUAL
-%token TOK_DOLLAR
-%token TOK_COMMA
-%token TOK_SEMICOLON
-%token TOK_PERIOD
-%token TOK_LPAREN
-%token TOK_RPAREN
-%token TOK_GREATER_EQ
-%token TOK_LESS_EQ
-%token TOK_GREATER
-%token TOK_LESS
+
+%union {
+       char* lexeme;			//identifier
+       double value;			//value of an identifier of type NUM
+       }
+
+%token INT
+%token <lexeme> LIMITS
+%token <lexeme> FUNCTION
+%token <lexeme> INTVAR
+
+%start integral
+
 %%
+integral	: INT LIMITS FUNCTION INTVAR {printf("The input string is: %s %s %s \n", $2, $3, $4); exit(0);}      
+      		| INT FUNCTION INTVAR {printf("The input string is: %s %s \n", $2, $3); exit(0);}
+    		;	
 
-tok_float:	TOK_FLOAT;
 %%
-
-int yyerror (char * msg)
-{
-    fprintf(stderr, "%s, (%d, %s, %s)", 
-			msg, yychar, StringBuffer, yytext );
-    return (0);
-}
-
