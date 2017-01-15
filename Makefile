@@ -1,5 +1,5 @@
 EXE = flcProject
-SRC = main.c flc_yacc.c flc_lex.c 
+SRC = main.c flc_lex.c flc_yacc.c
 
 LEX = flex
 YACC = bison --debug -o y.tab.c
@@ -28,16 +28,16 @@ compile:	$(EXE)
 clean: 
 	rm -f $(EXE) $(OBJ) flc_yacc.c flc_lex.c y.tab.c y.tab.h
 
-flc_lex.c:   flc_lex.l y.tab.h
+y.tab.h: 
+	@echo Updating parser symbol defs ...
+	$(YACC) -d flc_yacc.y
+	rm -f y.tab.c
+
+flc_lex.c:   flc_lex.l y.tab.h 
 	@echo Building lexical analyzer ...
-	@$(LEX) -t $< > $@
+	$(LEX) -t $< > $@
 
 flc_yacc.c:  flc_yacc.y
 	@echo Building parser ...
-	@$(YACC) $<
-	@mv y.tab.c $@
-
-y.tab.h:
-	@echo Updating parser symbol defs ...
-	@$(YACC) -d flc_yacc.y
-	@rm -f y.tab.c
+	$(YACC) $< 
+	mv y.tab.c $@

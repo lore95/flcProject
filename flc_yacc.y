@@ -3,11 +3,11 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdio.h>
-#ifndef YYSTYPE
-#define YYSTYPE int
-#endif
-#define INTEGER 258
-extern YYSTYPE yylval;
+void yyerror(char *s)
+{
+	fprintf(stderr, "** ERROR ** '%s'\n", s);
+}
+extern	char	*yytext;
 %}
 
 
@@ -16,16 +16,22 @@ extern YYSTYPE yylval;
        double value;			//value of an identifier of type NUM
        }
 
-%token INT
-%token <lexeme> LIMITS
-%token <lexeme> FUNCTION
-%token <lexeme> INTVAR
+%token INTEGRAL
+%token<lexeme> LIMITS
+%token<lexeme> FUNCTION
+%token<lexeme> INTVAR
 
 %start integral
 
 %%
-integral	: INT LIMITS FUNCTION INTVAR {printf("The input string is: %s %s %s \n", $2, $3, $4); exit(0);}      
-      		| INT FUNCTION INTVAR {printf("The input string is: %s %s \n", $2, $3); exit(0);}
+integral	: INTEGRAL 
+		  { printf("INTEGRAL ");}
+		  LIMITS 
+		  { printf("LIMITS: '%s'", yytext);}
+		  FUNCTION
+		  { printf("FUNCTION: '%s'", yytext);}
+		  INTVAR 
+		  { printf("iNTVAR: '%s'\n", yytext); exit(0);}
     		;	
 
 %%
