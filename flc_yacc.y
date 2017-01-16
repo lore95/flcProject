@@ -28,11 +28,16 @@ void yyerror(char *s)
 %token TOK_SBCLOSE
 %token TOK_COMMA
 %token TOK_POWER
+%token TOK_DOT
+%token TOK_PLUS
+%token TOK_MINUS
+%token TOK_DIVIDE
+%token TOK_MULTIPLY
+
 
 %token INTVAR
 %token SIGNEDDIGIT
 %token DIGIT
-%token COEFFICIENT
 %token VAR
 
 %start integral
@@ -40,11 +45,15 @@ void yyerror(char *s)
 %%
 integral	:	INTEGRAL
 				LIMITS
+				TOK_BOPEN
 				FUNCTION
+				TOK_BCLOSE
 				INTVAR
 			|
 				INTEGRAL
+				TOK_BOPEN
 				FUNCTION
+				TOK_BCLOSE
 				INTVAR
 		    ;
 		    
@@ -66,11 +75,10 @@ INTERVALDECL:	SIGNEDDIGIT
 				DIGIT
 			;
 		    
-FUNCTION	:	TOK_BOPEN
+FUNCTION	:	
 				FNCT
 				TOK_BOPEN
 				VARTOPOWER
-				TOK_BCLOSE
 				TOK_BCLOSE
 				{
 					printf("Integrating a function\n");
@@ -95,20 +103,42 @@ FNCT		:	TOK_LOG
 				}
 			;
 
+COEFFICIENT	:
+				SIGNEDDIGIT
+			|
+				DIGIT
+			|
+				SIGNEDDIGIT
+				TOK_DOT
+				DIGIT
+			;
+			
 VARTOPOWER	:	
 				VAR
+				{
+					printf("VAR only\n");
+				}
 			|
 				COEFFICIENT
 				VAR
+				{
+					printf("COEFFICIENT AND VAR\n");
+				}
 			|
 				VAR
 				TOK_POWER
 				DIGIT
+				{
+					printf("VAR AND DIGIT TO POWER\n");
+				}
 			|
 				COEFFICIENT
 				VAR
 				TOK_POWER
 				DIGIT
+				{
+					printf("COEFFICIENT, VAR AND DIGIT TO POWER\n");
+				}
 			;
 			
 %%

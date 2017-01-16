@@ -5,6 +5,7 @@
  *      Author: osvaldo
  */
 
+#include <stdio.h>
 
 void setLowerInterval(char *yytext)
 {
