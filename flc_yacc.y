@@ -95,7 +95,8 @@ FNCT		:	TOK_LOG
 				}
 			;
 
-VARTOPOWER	:	VAR
+VARTOPOWER	:	
+				VAR
 			|
 				COEFFICIENT
 				VAR
