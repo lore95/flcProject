@@ -29,10 +29,7 @@ void yyerror(char *s)
 %token TOK_COMMA
 %token TOK_POWER
 %token TOK_DOT
-%token TOK_PLUS
-%token TOK_MINUS
-%token TOK_DIVIDE
-%token TOK_MULTIPLY
+%token TOK_OPERATOR
 
 
 %token INTVAR
@@ -78,11 +75,13 @@ INTERVALDECL:	SIGNEDDIGIT
 FUNCTION	:	
 				FNCT
 				TOK_BOPEN
-				VARTOPOWER
+				POLINOMIAL
 				TOK_BCLOSE
 				{
 					printf("Integrating a function\n");
 				}
+			|
+				POLINOMIAL
 			;
 			
 FNCT		:	TOK_LOG
@@ -104,32 +103,41 @@ FNCT		:	TOK_LOG
 			;
 
 COEFFICIENT	:
-				SIGNEDDIGIT
+				DIGIT
+				{
+					printf("found a DIGIT\n");
+				}
 			|
 				DIGIT
-			|
-				SIGNEDDIGIT
 				TOK_DOT
 				DIGIT
+				{
+					printf("found a DIGIT, DOT, DIGIT\n");
+				}
 			;
-			
-VARTOPOWER	:	
+
+POLITERM	:	
+				COEFFICIENT
+				{
+					printf("POLITERM DIGIT\n");
+				}
+			|
 				VAR
 				{
-					printf("VAR only\n");
+					printf("POLITERM VAR only\n");
 				}
 			|
 				COEFFICIENT
 				VAR
 				{
-					printf("COEFFICIENT AND VAR\n");
+					printf("POLITERM DIGIT AND VAR\n");
 				}
 			|
 				VAR
 				TOK_POWER
 				DIGIT
 				{
-					printf("VAR AND DIGIT TO POWER\n");
+					printf("POLITERM VAR AND DIGIT TO POWER\n");
 				}
 			|
 				COEFFICIENT
@@ -137,8 +145,15 @@ VARTOPOWER	:
 				TOK_POWER
 				DIGIT
 				{
-					printf("COEFFICIENT, VAR AND DIGIT TO POWER\n");
+					printf("POLITERM DIGIT, VAR AND DIGIT TO POWER\n");
 				}
 			;
-			
+
+POLINOMIAL	:
+				POLITERM
+			|
+				POLITERM
+				TOK_OPERATOR
+				POLINOMIAL
+			;	
 %%

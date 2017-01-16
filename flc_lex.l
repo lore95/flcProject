@@ -25,11 +25,9 @@ INTEGRAL		INT
 \[						{printf("symbol '['\n"); return TOK_SBOPEN;}
 \]						{printf("symbol ']'\n"); return TOK_SBCLOSE;}
 ","						{printf("symbol ','\n"); return TOK_COMMA;}
-"+"						{printf("symbol '+'\n"); return TOK_PLUS;}
-"-"						{printf("symbol '-'\n"); return TOK_MINUS;}
-"*"						{printf("symbol '*'\n"); return TOK_DIVIDE;}
-"/"						{printf("symbol '/'\n"); return TOK_MULTIPLY;}
+[\+\-\/\*]				{printf("operator '%s'\n", yytext); return TOK_OPERATOR;}
 "."						{printf("symbol '.'\n"); return TOK_DOT;}
+"^"						{printf("symbol '^'\n"); return TOK_POWER;}
 [a-z]					{printf("var '%s'\n", yytext); return VAR;}
 
 %%
