@@ -8,25 +8,28 @@ extern  int yylex();
 
 INTVAR			d[^e]
 DIGIT	 		[0-9]+
+FLOAT			[0-9]+\.[0-9]*
+EXPONENT		\^[0-9]+
 INTEGRAL		INT
 %%
 
-{INTEGRAL}				{printf("integral\n"); return INTEGRAL;}
-{INTVAR}				{printf("intVar '%s'\n", yytext); return INTVAR;}
-{DIGIT}					{printf("digit '%s'\n", yytext); return DIGIT;}
-(log)|(LOG)				{printf("function LOG\n"); return TOK_LOG;}
-(ln)|(LN)				{printf("function LN\n"); return TOK_LN;}
-(cos)|(COS)				{printf("function COS\n"); return TOK_COS;}
-(sin)|(SIN)				{printf("function SIN\n"); return TOK_SIN;}
-\(						{printf("symbol '('\n"); return TOK_BOPEN;}
-\)						{printf("symbol ')'\n"); return TOK_BCLOSE;}
-\[						{printf("symbol '['\n"); return TOK_SBOPEN;}
-\]						{printf("symbol ']'\n"); return TOK_SBCLOSE;}
-","						{printf("symbol ','\n"); return TOK_COMMA;}
-[\+\-\/\*]				{printf("operator '%s'\n", yytext); return TOK_OPERATOR;}
-"."						{printf("symbol '.'\n"); return TOK_DOT;}
-"^"						{printf("symbol '^'\n"); return TOK_POWER;}
-[a-z]					{printf("var '%s'\n", yytext); return VAR;}
+{INTEGRAL}				{return INTEGRAL;}
+{INTVAR}				{return INTVAR;}
+{DIGIT}					{return DIGIT;}
+{EXPONENT}				{return EXPONENT;}
+{FLOAT}					{return FLOAT;}
+(log)|(LOG)				{return TOK_LOG;}
+(ln)|(LN)				{return TOK_LN;}
+(cos)|(COS)				{return TOK_COS;}
+(sin)|(SIN)				{return TOK_SIN;}
+\(						{return TOK_BOPEN;}
+\)						{return TOK_BCLOSE;}
+\[						{return TOK_SBOPEN;}
+\]						{return TOK_SBCLOSE;}
+","						{return TOK_COMMA;}
+[\+\-\/\*]				{return TOK_OPERATOR;}
+"."						{return TOK_DOT;}
+"^"						{return TOK_POWER;}
+[a-z]					{return VAR;}
 
 %%
-

@@ -5,6 +5,10 @@
 #include <stdio.h>
 
 extern	char	*yytext;
+char *coefficient;
+char *operator;
+char *varName;
+char *power;
 
 void yyerror(char *s)
 {
@@ -35,35 +39,51 @@ void yyerror(char *s)
 %token INTVAR
 %token SIGNEDDIGIT
 %token DIGIT
+%token FLOAT
+%token EXPONENT
 %token VAR
 
-%start integral
+%start integralInit
 
 %%
+integralInit:	{
+					init();
+				}
+				integral
+				{
+					calculate();
+				};
+				
 integral	:	INTEGRAL
 				LIMITS
 				TOK_BOPEN
 				FUNCTION
 				TOK_BCLOSE
 				INTVAR
+				{
+					setIntegrationVar(*(yytext+1));
+				}
 			|
 				INTEGRAL
 				TOK_BOPEN
 				FUNCTION
 				TOK_BCLOSE
 				INTVAR
+				{
+					setIntegrationVar(*(yytext+1));
+				}
 		    ;
 		    
 LIMITS		:	TOK_SBOPEN
 				INTERVALDECL
-					{
-						setLowerInterval(yytext);
-					}
+				{
+					setLowerBound(yytext);
+				}
 				TOK_COMMA
 				INTERVALDECL
-					{
-						setUpperInterval(yytext);
-					}
+				{
+					setUpperBound(yytext);
+				}
 		    	TOK_SBCLOSE
 		    ;
 
@@ -76,86 +96,129 @@ INTERVALDECL:
 		    
 FUNCTION	:	
 				FNCT
-				TOK_BOPEN
-				POLINOMIAL
-				TOK_BCLOSE
 				{
-					printf("Integrating a function\n");
+					setFunctionName(yytext);
 				}
+				TOK_BOPEN
+				POLYINIT
+				TOK_BCLOSE
 			|
-				POLINOMIAL
+				POLYINIT
 			;
 			
-FNCT		:	TOK_LOG
-				{
-					printf("Integrating a LOG\n");
-				}
-			|	TOK_LN
-				{
-					printf("Integrating a LN\n");
-				}
-			|	TOK_COS
-				{
-					printf("Integrating a COS\n");
-				}
-			|	TOK_SIN
-				{
-					printf("Integrating a SIN\n");
-				}
+FNCT		:	
+				TOK_LOG
+			|	
+				TOK_LN
+			|	
+				TOK_COS
+			|	
+				TOK_SIN
 			;
 
 COEFFICIENT	:
 				DIGIT
 				{
-					printf("found a DIGIT\n");
+					coefficient = strdup(yytext);
 				}
 			|
-				DIGIT
-				TOK_DOT
-				DIGIT
+				FLOAT
 				{
-					printf("found a DIGIT, DOT, DIGIT\n");
+					coefficient = strdup(yytext);
 				}
 			;
 
+VARRECNAME	:
+				VAR
+				{
+					varName = strdup(yytext);
+				}
+			;
+			
 POLITERM	:	
 				COEFFICIENT
-				{
-					printf("POLITERM DIGIT\n");
-				}
 			|
-				VAR
+				VARRECNAME
+			|
+				COEFFICIENT
+				VARRECNAME
+			|
+				VARRECNAME
+				EXPONENT
 				{
-					printf("POLITERM VAR only\n");
+					power = strdup((yytext + 1));
 				}
 			|
 				COEFFICIENT
-				VAR
+				VARRECNAME
+				EXPONENT
 				{
-					printf("POLITERM DIGIT AND VAR\n");
-				}
-			|
-				VAR
-				TOK_POWER
-				DIGIT
-				{
-					printf("POLITERM VAR AND DIGIT TO POWER\n");
-				}
-			|
-				COEFFICIENT
-				VAR
-				TOK_POWER
-				DIGIT
-				{
-					printf("POLITERM DIGIT, VAR AND DIGIT TO POWER\n");
+					power = strdup((yytext + 1));
 				}
 			;
 
-POLINOMIAL	:
+POLYINIT	:
+				{
+					addPolyTerm();
+				}
+				POLYNOMIAL
+			;	
+
+POLYNOMIAL	:
 				POLITERM
+				{
+					setPolyTerm(operator, coefficient, varName, power);
+					if (coefficient != NULL) 
+					{
+						free(coefficient);
+						coefficient = NULL;
+					}
+					if (varName != NULL) 
+					{
+						free(varName);
+						varName = NULL;
+					}
+					if (power != NULL) 
+					{
+						free(power);
+						power = NULL;
+					}
+					if (operator != NULL) 
+					{
+						free(operator);
+						operator = NULL;
+					}
+				}
 			|
 				POLITERM
+				{
+					setPolyTerm(operator, coefficient, varName, power);
+					if (coefficient != NULL) 
+					{
+						free(coefficient);
+						coefficient = NULL;
+					}
+					if (varName != NULL) 
+					{
+						free(varName);
+						varName = NULL;
+					}
+					if (power != NULL) 
+					{
+						free(power);
+						power = NULL;
+					}
+					if (operator != NULL) 
+					{
+						free(operator);
+						operator = NULL;
+					}
+				}
 				TOK_OPERATOR
-				POLINOMIAL
+				{
+					operator = strdup(yytext);
+				}
+				POLYINIT
 			;	
+
 %%
