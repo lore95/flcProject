@@ -144,35 +144,7 @@ void calculate()
 	{
 		printf("Integrating the polynomial ");
 	}
-	currentPolyTerm = symbolTable.root->next;
-	char operator;
-	while(currentPolyTerm != NULL)
-	{
-		if (currentPolyTerm->term.coefficient < 0)
-		{
-			operator = '-';
-		}
-		else
-		{
-			if (currentPolyTerm != symbolTable.root->next)
-			{
-				operator = '+';
-			}
-			else
-			{
-				operator = ' ';
-			}
-		}
-		printf("%c %s%s", operator,
-						   (currentPolyTerm->term.coefficient != 1.0 ? currentPolyTerm->term.coefficientString : ""),
-						   (currentPolyTerm->term.variable != NULL ? currentPolyTerm->term.variable : ""));
-		if (currentPolyTerm->term.power != 0)
-		{
-			printf("^%d", currentPolyTerm->term.power);
-		}
-		printf(" ");
-		currentPolyTerm = currentPolyTerm->next;
-	}
+
 
 	/*
 	 * Check if a function is specified and the argument is a polynomial with grade greater than 1
@@ -191,30 +163,15 @@ void calculate()
 		break;
 
 	case FNCT_LOG:
-		if (integralArgs & POLY_GRADE_MASK == POLY_GRADE_0)
-			calculateLogIntegralPoly0(symbolTable);
-		else if(integralArgs & POLY_GRADE_MASK == POLY_GRADE_1)
-			calculateLogIntegralPoly1(symbolTable);
-		else
-			printf("plz no more, rito plz");
+			calculateLogIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
 		break;
 	case FNCT_SIN:
-		if (integralArgs & POLY_GRADE_MASK == POLY_GRADE_0)
-					calculateSinIntegralPoly0(symbolTable);
-		else if(integralArgs & POLY_GRADE_MASK == POLY_GRADE_1)
-				calculateSinIntegralPoly1(symbolTable);
-		else
-			printf("plz no more, rito plz");
+		calculateSinIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
 		break;
 	case FNCT_COS:
-		if (integralArgs & POLY_GRADE_MASK == POLY_GRADE_0)
-				calculateCosIntegralPoly0(symbolTable);
-		else if(integralArgs & POLY_GRADE_MASK == POLY_GRADE_1)
-			calculateCosIntegralPoly1(symbolTable);
-		else
-			printf("plz no more, rito plz");
+		calculateCosIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
 		break;
-	case FNCT_EXP
+	case FNCT_EXP:
 		break;
 
 	}
