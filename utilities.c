@@ -2,7 +2,7 @@
  * utilities.c
  *
  *  Created on: Jan 15, 2017
- *      Author: osvaldo
+ *      Author: lorenzo
  */
 
 #include <stdio.h>
@@ -187,12 +187,22 @@ void calculate()
 	{
 	case 0:
 		// No function specified
-		calcualtePolynomialIntegral();
+		calcualtePolynomialIntegral(symbolTable);
 		break;
 
 	case FNCT_LOG:
-		claculateLogIntegral();
+		calculateLogIntegral(symbolTable);
 		break;
+	case FNCT_SIN:
+		calculateSinIntegral(symbolTable);
+		break;
+	case FNCT_COS:
+		calculateCosIntegral(symbolTable);
+		break;
+	case FNCT_EXP:
+		calculateExpIntegral(symbolTable);
+		break;
+
 	}
 	printf("\n");
 	exit(0);

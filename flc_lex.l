@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "y.tab.h"
-extern  int yylex();
+extern  int yylex(); 
 %}
 
 INTVAR			d[^e]
