@@ -18,7 +18,7 @@
 #define POLY_GRADE_1			0000001000000000
 #define POLY_GRADE_2			0000010000000000
 #define POLY_GRADE_3			0000100000000000
-#define PLOY_GRADE_MASK			0000111100000000
+#define POLY_GRADE_MASK			0000111100000000
 #define POLY_GRADE_MASK_GT_1	0000110000000000
 
 struct _polyTerm {
@@ -191,16 +191,30 @@ void calculate()
 		break;
 
 	case FNCT_LOG:
-		calculateLogIntegral(symbolTable);
+		if (integralArgs & POLY_GRADE_MASK == POLY_GRADE_0)
+			calculateLogIntegralPoly0(symbolTable);
+		else if(integralArgs & POLY_GRADE_MASK == POLY_GRADE_1)
+			calculateLogIntegralPoly1(symbolTable);
+		else
+			printf("plz no more, rito plz");
 		break;
 	case FNCT_SIN:
-		calculateSinIntegral(symbolTable);
+		if (integralArgs & POLY_GRADE_MASK == POLY_GRADE_0)
+					calculateSinIntegralPoly0(symbolTable);
+		else if(integralArgs & POLY_GRADE_MASK == POLY_GRADE_1)
+				calculateSinIntegralPoly1(symbolTable);
+		else
+			printf("plz no more, rito plz");
 		break;
 	case FNCT_COS:
-		calculateCosIntegral(symbolTable);
+		if (integralArgs & POLY_GRADE_MASK == POLY_GRADE_0)
+				calculateCosIntegralPoly0(symbolTable);
+		else if(integralArgs & POLY_GRADE_MASK == POLY_GRADE_1)
+			calculateCosIntegralPoly1(symbolTable);
+		else
+			printf("plz no more, rito plz");
 		break;
-	case FNCT_EXP:
-		calculateExpIntegral(symbolTable);
+	case FNCT_EXP
 		break;
 
 	}
