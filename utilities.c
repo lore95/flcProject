@@ -9,6 +9,18 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define FNCT_LOG				1000000000000000
+#define FNCT_EXP				0100000000000000
+#define FNCT_SIN				0010000000000000
+#define FNCT_COS				0001000000000000
+#define FNCT_MASK				1111000000000000
+#define POLY_GRADE_0			0000000100000000
+#define POLY_GRADE_1			0000001000000000
+#define POLY_GRADE_2			0000010000000000
+#define POLY_GRADE_3			0000100000000000
+#define PLOY_GRADE_MASK			0000111100000000
+#define POLY_GRADE_MASK_GT_1	0000110000000000
+
 struct _polyTerm {
 	char *variable;
 	float coefficient;
@@ -30,6 +42,7 @@ struct _symbolTable {
 } symbolTable;
 
 struct _polynomial *currentPolyTerm;
+short integralArgs = 0;
 
 void init()
 {
@@ -52,6 +65,15 @@ void setUpperBound(char *yytext)
 void setFunctionName(char *yytext)
 {
 	symbolTable.function = strdup(yytext);
+	if (strcmp(yytext, "LOG") == 0)
+	{
+		integralArgs |= FNCT_LOG;
+	}
+	else if (strcmp(yytext, "EXP") == 0)
+	{
+		integralArgs |= FNCT_EXP;
+	}
+
 }
 
 void initPolynomial()
@@ -80,6 +102,11 @@ void setPolyTerm(char *operator, char *coefficient, char *varName, char *power)
 	}
 	if (power != NULL)
 	{
+		if (atoi(power) > 3)
+		{
+			printf("The argument of the integral should be at maximum 3\n");
+			exit(-1);
+		}
 		currentPolyTerm->term.power = atoi(power);
 	}
 }
@@ -94,6 +121,7 @@ void addPolyTerm()
 	currentPolyTerm = currentPolyTerm->next;
 	currentPolyTerm->term.coefficient = 1.0;
 	currentPolyTerm->term.power = 0;
+	currentPolyTerm->next = NULL;
 }
 
 void setIntegrationVar(char varName)
@@ -144,6 +172,27 @@ void calculate()
 		}
 		printf(" ");
 		currentPolyTerm = currentPolyTerm->next;
+	}
+
+	/*
+	 * Check if a function is specified and the argument is a polynomial with grade greater than 1
+	 */
+	if (((integralArgs & FNCT_MASK) != 0) && ((integralArgs & POLY_GRADE_MASK_GT_1) != 0))
+	{
+		pritnf("The grade of the polynomial argument is greater than 1. Sorry I'm not able to solve it!\n");
+		exit(0);
+	}
+
+	switch((integralArgs & FNCT_MASK))
+	{
+	case 0:
+		// No function specified
+		calcualtePolynomialIntegral();
+		break;
+
+	case FNCT_LOG:
+		claculateLogIntegral();
+		break;
 	}
 	printf("\n");
 	exit(0);
