@@ -18,7 +18,7 @@ INTEGRAL		INT
 {DIGIT}					{return DIGIT;}
 {EXPONENT}				{return EXPONENT;}
 {FLOAT}					{return FLOAT;}
-(log)|(LOG)				{return TOK_LOG;}
+(exp)|(EXP)				{return TOK_EXP;}
 (ln)|(LN)				{return TOK_LN;}
 (cos)|(COS)				{return TOK_COS;}
 (sin)|(SIN)				{return TOK_SIN;}

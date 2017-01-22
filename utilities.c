@@ -9,40 +9,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define FNCT_LOG				1000000000000000
-#define FNCT_EXP				0100000000000000
-#define FNCT_SIN				0010000000000000
-#define FNCT_COS				0001000000000000
-#define FNCT_MASK				1111000000000000
-#define POLY_GRADE_0			0000000100000000
-#define POLY_GRADE_1			0000001000000000
-#define POLY_GRADE_2			0000010000000000
-#define POLY_GRADE_3			0000100000000000
-#define POLY_GRADE_MASK			0000111100000000
-#define POLY_GRADE_MASK_GT_1	0000110000000000
+#include "flc.h"
 
-struct _polyTerm {
-	char *variable;
-	float coefficient;
-	char *coefficientString;
-	int power;
-};
-
-struct _polynomial {
-	struct _polyTerm term;
-	struct _polynomial *next;
-};
-
-struct _symbolTable {
-	char *upperBound;
-	char *lowerBound;
-	char *function;
-	struct _polynomial *root;
-	char integrationVar;
-} symbolTable;
-
+struct _symbolTable symbolTable;
 struct _polynomial *currentPolyTerm;
-short integralArgs = 0;
+unsigned short integralArgs = 0;
 
 void init()
 {
@@ -62,12 +33,21 @@ void setUpperBound(char *yytext)
 	symbolTable.upperBound = strdup(yytext);
 }
 
+void strToUpper(char *str)
+{
+	while(*str != '\0')
+	{
+		*str = toupper(*str);
+		str++;
+	}
+}
 void setFunctionName(char *yytext)
 {
+	strToUpper(yytext);
 	symbolTable.function = strdup(yytext);
-	if (strcmp(yytext, "LOG") == 0)
+	if (strcmp(yytext, "LN") == 0)
 	{
-		integralArgs |= FNCT_LOG;
+		integralArgs |= FNCT_LN;
 	}
 	else if (strcmp(yytext, "EXP") == 0)
 	{
@@ -100,15 +80,43 @@ void setPolyTerm(char *operator, char *coefficient, char *varName, char *power)
 	{
 		currentPolyTerm->term.variable = strdup(varName);
 	}
-	if (power != NULL)
+	if (power == NULL)
 	{
-		if (atoi(power) > 3)
+		if (varName != NULL)
 		{
-			printf("The argument of the integral should be at maximum 3\n");
-			exit(-1);
+			power = "1";
 		}
-		currentPolyTerm->term.power = atoi(power);
+		else
+		{
+			power = "0";
+		}
 	}
+	currentPolyTerm->term.power = atoi(power);
+
+	switch(currentPolyTerm->term.power)
+	{
+	case 0:
+		integralArgs |= POLY_GRADE_0;
+		break;
+
+	case 1:
+		integralArgs |= POLY_GRADE_1;
+		break;
+
+	case 2:
+		integralArgs |= POLY_GRADE_2;
+		break;
+
+	case 3:
+		integralArgs |= POLY_GRADE_3;
+		break;
+
+	default:
+		printf("The argument of the integral should be at maximum 3\n");
+		exit(-1);
+	}
+
+	currentPolyTerm->term.power = atoi(power);
 }
 
 void addPolyTerm()
@@ -120,7 +128,9 @@ void addPolyTerm()
 	currentPolyTerm->next = (struct _polynomial *) malloc(sizeof(struct _polynomial));
 	currentPolyTerm = currentPolyTerm->next;
 	currentPolyTerm->term.coefficient = 1.0;
+	currentPolyTerm->term.coefficientString = "";
 	currentPolyTerm->term.power = 0;
+	currentPolyTerm->term.variable = "";
 	currentPolyTerm->next = NULL;
 }
 
@@ -135,23 +145,12 @@ void calculate()
 	printf("Integrating on variable %c\n", symbolTable.integrationVar);
 	printf("Limits: lower %s; upper %s\n", symbolTable.lowerBound,
 										   symbolTable.upperBound);
-	if (symbolTable.function != NULL)
-	{
-		printf("The integral function is: %s\n", symbolTable.function);
-		printf("the argument is ");
-	}
-	else
-	{
-		printf("Integrating the polynomial ");
-	}
-
-
 	/*
 	 * Check if a function is specified and the argument is a polynomial with grade greater than 1
 	 */
 	if (((integralArgs & FNCT_MASK) != 0) && ((integralArgs & POLY_GRADE_MASK_GT_1) != 0))
 	{
-		pritnf("The grade of the polynomial argument is greater than 1. Sorry I'm not able to solve it!\n");
+		printf("The grade of the polynomial argument is greater than 1. Sorry I'm not able to solve it!\n");
 		exit(0);
 	}
 
@@ -162,14 +161,14 @@ void calculate()
 		calcualtePolynomialIntegral(symbolTable);
 		break;
 
-	case FNCT_LOG:
-			calculateLogIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
+	case FNCT_LN:
+		calculateLogIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
 		break;
 	case FNCT_SIN:
-		calculateSinIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
+		// calculateSinIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
 		break;
 	case FNCT_COS:
-		calculateCosIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
+		// calculateCosIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
 		break;
 	case FNCT_EXP:
 		break;

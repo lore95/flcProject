@@ -1,11 +1,11 @@
-EXE = flcProject
+			EXE = flcProject
 SRC = main.c utilities.c integralCalculator.c flc_lex.c flc_yacc.c 
 
 LEX = flex
 YACC = bison --debug -o y.tab.c
 
 LOCAL_CFLAGS = -O -g
-LOCAL_LIBES = -lfl
+LOCAL_LIBES = -lfl -lm
 
 CC = gcc
 LD = gcc
