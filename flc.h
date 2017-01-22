@@ -33,8 +33,8 @@ struct _polynomial {
 };
 
 struct _symbolTable {
-	char *upperBound;
-	char *lowerBound;
+	char upperBound[64];
+	char lowerBound[64];
 	char *function;
 	struct _polynomial *root;
 	char integrationVar;

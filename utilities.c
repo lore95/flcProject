@@ -17,20 +17,25 @@ unsigned short integralArgs = 0;
 
 void init()
 {
-	symbolTable.lowerBound = NULL;
-	symbolTable.upperBound = NULL;
+//	symbolTable.lowerBound = NULL;
+//	symbolTable.upperBound = NULL;
 	symbolTable.function = NULL;
 	symbolTable.root = NULL;
 }
 
-void setLowerBound(char *yytext)
+void setLowerBound(char *yytext, char *operator)
 {
-	symbolTable.lowerBound = strdup(yytext);
+	sprintf(symbolTable.lowerBound, "%s%s", (operator == NULL ? "" : operator), yytext);
 }
 
-void setUpperBound(char *yytext)
+void setUpperBound(char *yytext, char *operator)
 {
-	symbolTable.upperBound = strdup(yytext);
+	sprintf(symbolTable.upperBound, "%s%s", (operator == NULL ? "" : operator), yytext);
+	if (atoi(symbolTable.upperBound) < atoi(symbolTable.lowerBound))
+	{
+		printf("The integration bounds set are incorrect!!!\n");
+		exit(-1);
+	}
 }
 
 void strToUpper(char *str)

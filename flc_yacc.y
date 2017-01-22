@@ -75,18 +75,21 @@ integral	:	INTEGRAL
 LIMITS		:	TOK_SBOPEN
 				INTERVALDECL
 				{
-					setLowerBound(yytext);
+					setLowerBound(yytext, operator);
 				}
 				TOK_COMMA
 				INTERVALDECL
 				{
-					setUpperBound(yytext);
+					setUpperBound(yytext, operator);
 				}
 		    	TOK_SBCLOSE
 		    ;
 
 INTERVALDECL:
 				TOK_OPERATOR
+				{
+					operator = strdup(yytext);
+				}
 				DIGIT
 			|
 				DIGIT
