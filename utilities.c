@@ -17,8 +17,8 @@ unsigned short integralArgs = 0;
 
 void init()
 {
-	symbolTable.lowerBound = "INF";
-	symbolTable.upperBound = "INF";
+	symbolTable.lowerBound = NULL;
+	symbolTable.upperBound = NULL;
 	symbolTable.function = NULL;
 	symbolTable.root = NULL;
 }
@@ -49,6 +49,14 @@ void setFunctionName(char *yytext)
 	{
 		integralArgs |= FNCT_LN;
 	}
+	else if (strcmp(yytext, "SIN") == 0)
+		{
+			integralArgs |= FNCT_SIN;
+		}
+	else if (strcmp(yytext, "COS") == 0)
+		{
+			integralArgs |= FNCT_COS;
+		}
 	else if (strcmp(yytext, "EXP") == 0)
 	{
 		integralArgs |= FNCT_EXP;
@@ -165,10 +173,10 @@ void calculate()
 		calculateLogIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
 		break;
 	case FNCT_SIN:
-		// calculateSinIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
+		calculateSinIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
 		break;
 	case FNCT_COS:
-		// calculateCosIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
+		calculateCosIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
 		break;
 	case FNCT_EXP:
 		break;

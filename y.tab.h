@@ -40,7 +40,7 @@
       know about them.  */
    enum yytokentype {
      INTEGRAL = 258,
-     TOK_LOG = 259,
+     TOK_EXP = 259,
      TOK_LN = 260,
      TOK_COS = 261,
      TOK_SIN = 262,
@@ -55,12 +55,14 @@
      INTVAR = 271,
      SIGNEDDIGIT = 272,
      DIGIT = 273,
-     VAR = 274
+     FLOAT = 274,
+     EXPONENT = 275,
+     VAR = 276
    };
 #endif
 /* Tokens.  */
 #define INTEGRAL 258
-#define TOK_LOG 259
+#define TOK_EXP 259
 #define TOK_LN 260
 #define TOK_COS 261
 #define TOK_SIN 262
@@ -75,20 +77,22 @@
 #define INTVAR 271
 #define SIGNEDDIGIT 272
 #define DIGIT 273
-#define VAR 274
+#define FLOAT 274
+#define EXPONENT 275
+#define VAR 276
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 15 "flc_yacc.y"
+#line 17 "flc_yacc.y"
 {
        char* lexeme;			//identifier
        double value;			//value of an identifier of type NUM
        }
 /* Line 1529 of yacc.c.  */
-#line 92 "y.tab.h"
+#line 96 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
