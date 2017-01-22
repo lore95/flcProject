@@ -93,6 +93,9 @@ INTERVALDECL:
 				DIGIT
 			|
 				DIGIT
+				{
+					operator = NULL;
+				}
 			;
 		    
 FUNCTION	:	
