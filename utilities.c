@@ -161,7 +161,7 @@ void calculate()
 		printf("The grade of the polynomial argument is greater than 1. Sorry I'm not able to solve it!\n");
 		exit(0);
 	}
-
+	unsigned short grade = (unsigned short)(integralArgs & POLY_GRADE_MASK);
 	switch((integralArgs & FNCT_MASK))
 	{
 	case 0:
@@ -173,7 +173,7 @@ void calculate()
 		calculateLogIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
 		break;
 	case FNCT_SIN:
-		calculateSinIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
+		calculateSinIntegralPoly(symbolTable,grade);
 		break;
 	case FNCT_COS:
 		calculateCosIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);

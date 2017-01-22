@@ -110,7 +110,7 @@ void calculateLogIntegralPoly(struct _symbolTable symbolTable, int grade) {
 	}
 }
 
- void calculateSinIntegralPoly(struct _symbolTable symbolTable, int grade)
+ void calculateSinIntegralPoly(struct _symbolTable symbolTable, unsigned short grade)
  {
 	 struct _polynomial *currentPolyTerm;
 	 float integralResult = 0;
@@ -129,7 +129,8 @@ void calculateLogIntegralPoly(struct _symbolTable symbolTable, int grade) {
 	 		}
 	 		else
 	 		{
-	 			integralResult =(-cos(uBound)+cos(lBound));
+	 			integralResult =(1/currentPolyTerm->term.coefficient)*
+	 							(-cos(uBound * currentPolyTerm->term.coefficient) + cos(lBound * currentPolyTerm->term.coefficient));
 	 		}
 	 	}
 	 	if (grade == POLY_GRADE_1)
@@ -137,7 +138,7 @@ void calculateLogIntegralPoly(struct _symbolTable symbolTable, int grade) {
 	 		if (currentPolyTerm->term.coefficient == 1)
 	 			printf("The integrated function is '-cos(%c) + C \n",symbolTable.integrationVar);
 	 		else
-	 			printf("The integrated function is '1/%s (-cos(%s%c)) + C \n",currentPolyTerm->term.coefficientString,currentPolyTerm->term.coefficientString,symbolTable.integrationVar);
+	 			printf("The integrated function is '(1/%s (-cos(%s%c))) + C \n",currentPolyTerm->term.coefficientString,currentPolyTerm->term.coefficientString,symbolTable.integrationVar);
 	 	}
 	 	else
 	 	{
