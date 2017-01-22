@@ -170,13 +170,13 @@ void calculate()
 		break;
 
 	case FNCT_LN:
-		calculateLogIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
+		calculateLogIntegralPoly(symbolTable, grade);
 		break;
 	case FNCT_SIN:
-		calculateSinIntegralPoly(symbolTable,grade);
+		calculateSinIntegralPoly(symbolTable, grade);
 		break;
 	case FNCT_COS:
-		calculateCosIntegralPoly(symbolTable,integralArgs & POLY_GRADE_MASK);
+		calculateCosIntegralPoly(symbolTable, grade);
 		break;
 	case FNCT_EXP:
 		break;
