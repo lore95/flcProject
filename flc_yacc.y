@@ -41,6 +41,9 @@ void yyerror(char *s)
 %token EXPONENT
 %token VAR
 
+%token MANUAL
+%token EXAMPLES
+
 %start integralInit
 
 %%
@@ -50,7 +53,18 @@ integralInit:	{
 				integral
 				{
 					calculate();
-				};
+				}
+				|
+				MANUAL
+				{
+					printManual();
+				}
+				|
+				EXAMPLES
+				{
+					printExamples();
+				}
+			;
 				
 integral	:	INTEGRAL
 				LIMITS

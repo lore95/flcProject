@@ -21,6 +21,7 @@ void init()
 //	symbolTable.upperBound = NULL;
 	symbolTable.function = NULL;
 	symbolTable.root = NULL;
+	printf("Insert an integral to be calculated or type MAN (for manual) or EXS (for examples)\n");
 }
 
 void setLowerBound(char *yytext, char *operator)
@@ -184,9 +185,33 @@ void calculate()
 		calculateCosIntegralPoly(symbolTable, grade);
 		break;
 	case FNCT_EXP:
+		calculateExpIntegralPoly(symbolTable, grade);
 		break;
 
 	}
 	printf("\n");
 	exit(0);
+}
+
+void printManual(){
+	printf("In order to be correctly executed, integrals must be in this format:\n"
+			"INT[lowerbound,upperbound](function(polinomy))intvar\n\n"
+			"INT: defines the integral function.\n"
+			"[lowerbound, upperbound]: optional directive, returns surface value.\n"
+			"function(): sin(), cos(), log(), exp() (both log and exp are e-relative), or also none.\n"
+			"polinomy: at most of grade 1 for previous functions or 3 for the no-function option.\n"
+			"intvar: the integration variable (ex. dx)\n\n"
+			"Function calculator will allow only to calculate first grade polinomies without constants.\n");
+}
+
+void printExamples(){
+	printf("Some examples that will work using our calculator:\n"
+			"INT[-2,3](sin(3x))dx\n"
+			"INT(cos(47))dx\n"
+			"INT(x^2+4x-2)dx\n"
+			"INT[4,6](log(4x))dx\n\n"
+			"Some non-accepted inputs:\n"
+			"INT[3,1](x^2)dx (lower bound greater than upper bound)\n"
+			"INT(sin(x+4))dx (first grade polinomy with constant)\n"
+			"INT(log(4x^2))dx (second grade polinomy)\n\n");
 }

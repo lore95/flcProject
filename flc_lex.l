@@ -11,6 +11,8 @@ DIGIT	 		[0-9]+
 FLOAT			[0-9]+\.[0-9]*
 EXPONENT		\^[0-9]+
 INTEGRAL		INT
+MANUAL			MAN
+EXAMPLES		EXS
 %%
 
 {INTEGRAL}				{return INTEGRAL;}
@@ -18,6 +20,8 @@ INTEGRAL		INT
 {DIGIT}					{return DIGIT;}
 {EXPONENT}				{return EXPONENT;}
 {FLOAT}					{return FLOAT;}
+{MANUAL}				{return MANUAL;}
+{EXAMPLES}				{return EXAMPLES;}
 (exp)|(EXP)				{return TOK_EXP;}
 (ln)|(LN)				{return TOK_LN;}
 (cos)|(COS)				{return TOK_COS;}
