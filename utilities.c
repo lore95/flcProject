@@ -17,8 +17,8 @@ unsigned short integralArgs = 0;
 
 void init()
 {
-//	symbolTable.lowerBound = NULL;
-//	symbolTable.upperBound = NULL;
+	memset(symbolTable.lowerBound, '\0', sizeof(symbolTable.lowerBound));
+	memset(symbolTable.upperBound, '\0', sizeof(symbolTable.lowerBound));
 	symbolTable.function = NULL;
 	symbolTable.root = NULL;
 	printf("Insert an integral to be calculated or type MAN (for manual) or EXS (for examples)\n");

@@ -53,7 +53,7 @@ void calcualtePolynomialIntegral(struct _symbolTable symbolTable) {
 			strcat(result,
 					polyTermToString(operator, currentPolyTerm->term,
 							symbolTable.integrationVar));
-			if (symbolTable.upperBound != NULL) {
+			if (strcmp(symbolTable.upperBound, "") != 0) {
 				float termResult = currentPolyTerm->term.coefficient
 						/ (currentPolyTerm->term.power + 1);
 				integralResult += (termResult
@@ -67,7 +67,7 @@ void calcualtePolynomialIntegral(struct _symbolTable symbolTable) {
 		currentPolyTerm = currentPolyTerm->next;
 	}
 	printf("The integrated function is '%s+ C'\n", result);
-	if (symbolTable.upperBound != NULL) {
+	if (strcmp(symbolTable.upperBound, "") != 0) {
 		printf("The integrated function value is '%f'\n", integralResult);
 	}
 }
@@ -79,7 +79,7 @@ void calculateLogIntegralPoly(struct _symbolTable symbolTable,
 
 	currentPolyTerm = symbolTable.root->next;
 
-	if (symbolTable.upperBound != NULL) {
+	if (strcmp(symbolTable.upperBound, "") != 0) {
 		int uBound = atoi(symbolTable.upperBound);
 		int lBound = atoi(symbolTable.lowerBound);
 
@@ -102,7 +102,7 @@ void calculateLogIntegralPoly(struct _symbolTable symbolTable,
 	} else {
 		printf("+ C'\n");
 	}
-	if (symbolTable.upperBound != NULL) {
+	if (strcmp(symbolTable.upperBound, "") != 0) {
 		printf(
 				"The integrated function value over the specified limits is '%f'\n",
 				integralResult);
@@ -116,7 +116,7 @@ void calculateExpIntegralPoly(struct _symbolTable symbolTable,
 
 	currentPolyTerm = symbolTable.root->next;
 
-	if (symbolTable.upperBound != NULL) {
+	if (strcmp(symbolTable.upperBound, "") != 0) {
 		int uBound = atoi(symbolTable.upperBound);
 		int lBound = atoi(symbolTable.lowerBound);
 
@@ -139,7 +139,7 @@ void calculateExpIntegralPoly(struct _symbolTable symbolTable,
 				symbolTable.integrationVar,
 				currentPolyTerm->term.coefficientString);
 	}
-	if (symbolTable.upperBound != NULL) {
+	if (strcmp(symbolTable.upperBound, "") != 0) {
 		printf(
 				"The integrated function value over the specified limits is '%f'\n",
 				integralResult);
@@ -153,7 +153,7 @@ void calculateSinIntegralPoly(struct _symbolTable symbolTable,
 
 	currentPolyTerm = symbolTable.root->next;
 
-	if (symbolTable.upperBound != NULL) {
+	if (strcmp(symbolTable.upperBound, "") != 0) {
 		int uBound = atoi(symbolTable.upperBound);
 		int lBound = atoi(symbolTable.lowerBound);
 
@@ -179,7 +179,7 @@ void calculateSinIntegralPoly(struct _symbolTable symbolTable,
 		printf(" %c sin(%f) + C'\n", symbolTable.integrationVar,
 				currentPolyTerm->term.coefficient);
 	}
-	if (symbolTable.upperBound != NULL) {
+	if (strcmp(symbolTable.upperBound, "") != 0) {
 		printf(
 				"The integrated function value over the specified limits is '%f'\n",
 				integralResult);
@@ -192,7 +192,7 @@ void calculateCosIntegralPoly(struct _symbolTable symbolTable,
 
 	currentPolyTerm = symbolTable.root->next;
 
-	if (symbolTable.upperBound != NULL) {
+	if (strcmp(symbolTable.upperBound, "") != 0) {
 		int uBound = atoi(symbolTable.upperBound);
 		int lBound = atoi(symbolTable.lowerBound);
 
@@ -219,7 +219,7 @@ void calculateCosIntegralPoly(struct _symbolTable symbolTable,
 					currentPolyTerm->term.coefficientString,
 					symbolTable.integrationVar);
 	}
-	if (symbolTable.upperBound != NULL) {
+	if (strcmp(symbolTable.upperBound, "") != 0) {
 		printf(
 				"The integrated function value over the specified limits is '%f'\n",
 				integralResult);
