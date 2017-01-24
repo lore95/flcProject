@@ -21,7 +21,6 @@ void init()
 	memset(symbolTable.upperBound, '\0', sizeof(symbolTable.lowerBound));
 	symbolTable.function = NULL;
 	symbolTable.root = NULL;
-	printf("Insert an integral to be calculated or type MAN (for manual) or EXS (for examples)\n");
 }
 
 void setLowerBound(char *yytext, char *operator)
