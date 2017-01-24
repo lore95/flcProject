@@ -201,6 +201,7 @@ void printManual(){
 			"polinomy: at most of grade 1 for previous functions or 3 for the no-function option.\n"
 			"intvar: the integration variable (ex. dx)\n\n"
 			"Function calculator will allow only to calculate first grade polinomies without constants.\n");
+	exit(0);
 }
 
 void printExamples(){
@@ -213,4 +214,5 @@ void printExamples(){
 			"INT[3,1](x^2)dx (lower bound greater than upper bound)\n"
 			"INT(sin(x+4))dx (first grade polinomy with constant)\n"
 			"INT(log(4x^2))dx (second grade polinomy)\n\n");
+	exit(0);
 }
