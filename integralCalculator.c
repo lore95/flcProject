@@ -126,7 +126,7 @@ void calculateExpIntegralPoly(struct _symbolTable symbolTable,
 		} else {
 			integralResult = ((1 / currentPolyTerm->term.coefficient)
 					* (exp((currentPolyTerm->term.coefficient * uBound))
-							- exp(currentPolyTerm->term.coefficient * lB)));
+							- exp(currentPolyTerm->term.coefficient * lBound)));
 		}
 	}
 	if (grade == POLY_GRADE_1) {
