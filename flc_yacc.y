@@ -14,10 +14,6 @@ void yyerror(char *s)
 }
 %}
 
-%union {
-       char* lexeme;			//identifier
-       double value;			//value of an identifier of type NUM
-       }
 
 %token INTEGRAL
 %token TOK_EXP
@@ -53,13 +49,13 @@ integralInit:	{
 				integral
 				{
 					calculate();
-				}
-				|
+				}			
+			|
 				MANUAL
 				{
 					printManual();
 				}
-				|
+			|
 				EXAMPLES
 				{
 					printExamples();
